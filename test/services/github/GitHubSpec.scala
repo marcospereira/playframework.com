@@ -1,7 +1,7 @@
 package services.github
 
 import org.specs2.mutable.Specification
-import org.specs2.time.NoTimeConversions
+import play.api.http.{DefaultFileMimeTypesProvider, FileMimeTypesConfiguration}
 import play.api.mvc.Results._
 import play.api.mvc.Action
 import play.api.test.WsTestClient
@@ -13,6 +13,8 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object GitHubSpec extends Specification {
+
+  implicit val fileMimeTypes = new DefaultFileMimeTypesProvider(FileMimeTypesConfiguration(Map("json" -> "application/json"))).get
 
   "The GitHub service" should {
     "allow getting an organisation" in withGitHub { gh =>
