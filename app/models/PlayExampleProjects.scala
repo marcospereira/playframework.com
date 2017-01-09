@@ -4,10 +4,11 @@ import javax.inject.Inject
 
 import com.google.inject.{AbstractModule, Singleton}
 import play.api.Configuration
-import play.api.cache.CacheApi
-import play.api.data.validation.ValidationError
+import play.api.cache.SyncCacheApi
 import play.api.libs.json._
 import play.api.libs.ws.WSClient
+
+import scala.collection.JavaConverters._
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
@@ -53,9 +54,8 @@ class ExamplesModule extends AbstractModule {
 class PlayExampleProjectsService @Inject()(
   configuration: Configuration,
   ws: WSClient,
-  cache: CacheApi
+  cache: SyncCacheApi
 )(implicit ec: ExecutionContext) {
-  import scala.collection.JavaConverters._
 
   private val logger = org.slf4j.LoggerFactory.getLogger(this.getClass)
 
@@ -67,7 +67,7 @@ class PlayExampleProjectsService @Inject()(
   private val examplesCacheTtl =
     configuration.getMilliseconds("examples.cache.ttl").get.milliseconds
 
-  val validPlayVersions: Set[String] = configuration.getStringList("examples.playVersions").get.asScala.toSet
+  val validPlayVersions: Set[String] = configuration.underlying.getStringList("examples.playVersions").asScala.toSet
 
   def playQueryString: Seq[(String, String)] = {
     Seq("keyword" -> "play") ++ validPlayVersions.map("keyword" -> _)
@@ -83,8 +83,8 @@ class PlayExampleProjectsService @Inject()(
             cache.set("example.projects", playProjects, examplesCacheTtl)
           }
           playProjects
-        case JsError(errors: Seq[(JsPath, Seq[ValidationError])]) =>
-          logger.error(s"Cannot parse example projects\n${errors}")
+        case JsError(errors: Seq[(JsPath, Seq[JsonValidationError])]) =>
+          logger.error(s"Cannot parse example projects\n$errors")
           Seq.empty
       }
     }
