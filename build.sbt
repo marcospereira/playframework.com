@@ -16,17 +16,17 @@ libraryDependencies ++= Seq(
   "org.webjars" % "html5shiv" % "3.7.2",
   "org.webjars" % "prettify" % "4-Mar-2013",
   "org.webjars" % "clipboard.js" % "1.5.5",
-  "com.typesafe.play" %% "anorm" % "2.6.0-SNAPSHOT",
+  "com.typesafe.play" %% "anorm" % "2.6.0-M1",
   guice,
   jdbc,
-  cache,
+  ehcache,
   evolutions,
   filters,
   ws,
   specs2 % "test"
 )
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.2"
 
 routesGenerator := InjectedRoutesGenerator
 
@@ -53,3 +53,5 @@ sourceGenerators in Compile += Def.task {
 managedSourceDirectories in Compile += crossTarget.value / "version"
 sources in (Compile, doc) := Seq.empty
 publishArtifact in (Compile, packageDoc) := false
+
+resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"

@@ -59,13 +59,11 @@ class PlayExampleProjectsService @Inject()(
 
   private val logger = org.slf4j.LoggerFactory.getLogger(this.getClass)
 
-  private val examplesUrl =
-    configuration.getString("examples.apiUrl").get
+  private val examplesUrl = configuration.get[String]("examples.apiUrl")
 
   // NOTE: TTL is really just a safety measure here.
   // We should re-deploy when we make major changes to projects
-  private val examplesCacheTtl =
-    configuration.getMilliseconds("examples.cache.ttl").get.milliseconds
+  private val examplesCacheTtl = configuration.getMillis("examples.cache.ttl").milliseconds
 
   val validPlayVersions: Set[String] = configuration.underlying.getStringList("examples.playVersions").asScala.toSet
 
@@ -74,7 +72,7 @@ class PlayExampleProjectsService @Inject()(
   }
 
   def examples(): Future[Seq[ExampleProject]] = {
-    ws.url(examplesUrl).withQueryString(playQueryString: _*).get().map { r =>
+    ws.url(examplesUrl).withQueryStringParameters(playQueryString: _*).get().map { r =>
       val json: JsValue = r.json
       Json.fromJson[Seq[ExampleProject]](json) match {
         case JsSuccess(allProjects, _) =>
