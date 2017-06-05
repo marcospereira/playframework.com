@@ -1,6 +1,6 @@
 package services.github
 
-import play.api.{Logger, Configuration, Environment}
+import play.api.{ Logger, Configuration, Environment }
 import play.api.inject.Module
 
 class GitHubModule extends Module {

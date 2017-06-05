@@ -1,13 +1,13 @@
 package utils
 
 import play.doc.FileHandle
-import java.io.{InputStream, File}
+import java.io.{ InputStream, File }
 import org.eclipse.jgit.api.Git
 import scala.collection.JavaConverters._
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.TreeWalk
-import org.eclipse.jgit.treewalk.filter.{PathSuffixFilter, TreeFilter, PathFilter}
-import org.eclipse.jgit.lib.{FileMode, ObjectId, RepositoryBuilder, Constants}
+import org.eclipse.jgit.treewalk.filter.{ PathSuffixFilter, TreeFilter, PathFilter }
+import org.eclipse.jgit.lib.{ FileMode, ObjectId, RepositoryBuilder, Constants }
 import org.eclipse.jgit.api.ListBranchCommand.ListMode
 import org.eclipse.jgit.transport.TagOpt
 
@@ -21,8 +21,7 @@ class PlayGitRepository(val gitDir: File, val remote: String = "origin", basePat
 
   def close(): Unit = repository.close()
   def allTags: Seq[(String, ObjectId)] = git.tagList().call().asScala.map(tag =>
-    tag.getName.stripPrefix("refs/tags/") -> tag.getLeaf.getObjectId
-  )
+    tag.getName.stripPrefix("refs/tags/") -> tag.getLeaf.getObjectId)
   def allBranches: Seq[(String, ObjectId)] = git.branchList().setListMode(ListMode.REMOTE).call().asScala.collect {
     case origin if origin.getName.startsWith("refs/remotes/" + remote + "/") =>
       origin.getName.stripPrefix("refs/remotes/" + remote + "/") -> origin.getLeaf.getObjectId
@@ -89,17 +88,18 @@ class PlayGitRepository(val gitDir: File, val remote: String = "origin", basePat
   }
 
   def findFileWithName(hash: ObjectId, basePath: Option[String], name: String): Option[String] = {
-    scanFiles(hash,
+    scanFiles(
+      hash,
       basePath.map(new FileWithNameFilter(_, name)).getOrElse(PathSuffixFilter.create("#/" + name))
     ) { treeWalk =>
-      if (!treeWalk.next()) {
-        None
-      } else if (treeWalkIsFile(treeWalk)) {
-        Some(treeWalk.getPathString.drop(basePath.map(_.length + 1).getOrElse(0)))
-      } else {
-        None
+        if (!treeWalk.next()) {
+          None
+        } else if (treeWalkIsFile(treeWalk)) {
+          Some(treeWalk.getPathString.drop(basePath.map(_.length + 1).getOrElse(0)))
+        } else {
+          None
+        }
       }
-    }
   }
 
   def listAllFilesInPath(hash: ObjectId, path: String): Seq[String] = {

@@ -8,7 +8,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.libs.ws._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 import models.github._
 
 /**
@@ -62,7 +62,7 @@ class DefaultGitHub @Inject() (ws: WSClient, config: GitHubConfig)(implicit ec: 
 
   private def load[T: Reads](path: String) = {
     val url = if (path.matches("https?://.*")) path else config.gitHubApiUrl + path
-    authCall(url).get().map { response => 
+    authCall(url).get().map { response =>
       checkSuccess(response).json.as[T]
     }
   }
@@ -112,17 +112,17 @@ class DefaultGitHub @Inject() (ws: WSClient, config: GitHubConfig)(implicit ec: 
 
   def fetchOrganisation(organisation: String) =
     load[Organisation]("/orgs/" + organisation)
-  
+
   def fetchOrganisationTeams(organisation: Organisation) =
     loadWithPaging[Team]("/orgs/" + organisation.login + "/teams")
 
-  def fetchTeamMembers(team: Team) = 
+  def fetchTeamMembers(team: Team) =
     loadWithPaging[GitHubUser](expand(team.membersUrl))
 
-  def fetchOrganisationMembers(organisation: Organisation) = 
+  def fetchOrganisationMembers(organisation: Organisation) =
     loadWithPaging[GitHubUser](expand(organisation.membersUrl))
 
-  def fetchUserDetails(user: GitHubUser) = 
+  def fetchUserDetails(user: GitHubUser) =
     load[GitHubUser](expand(user.url))
 
   def fetchRepoContributors(repo: Repository) =
@@ -130,6 +130,6 @@ class DefaultGitHub @Inject() (ws: WSClient, config: GitHubConfig)(implicit ec: 
       (implicitly[Reads[GitHubUser]] and (__ \ "contributions").read[Int]).tupled
     )
 
-  def fetchOrganisationRepos(organisation: Organisation) = 
+  def fetchOrganisationRepos(organisation: Organisation) =
     loadWithPaging[Repository](expand(organisation.reposUrl))
 }

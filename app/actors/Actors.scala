@@ -2,7 +2,7 @@ package actors
 
 import java.io.File
 
-import javax.inject.{Provider, Inject, Singleton}
+import javax.inject.{ Provider, Inject, Singleton }
 import com.google.inject.AbstractModule
 import models.documentation._
 import play.api._
@@ -22,7 +22,8 @@ class ActorsModule extends AbstractModule with AkkaGuiceSupport {
 class DocumentationConfigProvider @Inject() (environment: Environment, configuration: Configuration) extends Provider[DocumentationConfig] {
 
   lazy val get: DocumentationConfig = loadConfig.getOrElse(DocumentationConfig(
-    TranslationConfig(Lang("en"), environment.rootPath, None, "origin", None, None), Nil))
+    TranslationConfig(Lang("en"), environment.rootPath, None, "origin", None, None), Nil
+  ))
 
   private def loadConfig: Option[DocumentationConfig] = {
     for {
@@ -32,8 +33,10 @@ class DocumentationConfigProvider @Inject() (environment: Environment, configura
       mainTranslation <- loadTranslationConfig(path, mainConfig)
       translations <- docsConfig.getConfigList("translations")
     } yield {
-      DocumentationConfig(mainTranslation,
-        translations.asScala.toList.collect(Function.unlift(loadTranslationConfig(path, _))))
+      DocumentationConfig(
+        mainTranslation,
+        translations.asScala.toList.collect(Function.unlift(loadTranslationConfig(path, _)))
+      )
     }
   }
 

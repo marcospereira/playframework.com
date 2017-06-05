@@ -5,7 +5,7 @@ import java.util.Locale
 import play.api.Logger
 import play.api.i18n.Lang
 import play.doc.PlayDoc
-import utils.{ExtendedFileRepository, PlayGitRepository}
+import utils.{ ExtendedFileRepository, PlayGitRepository }
 
 import scala.util.control.NonFatal
 
@@ -54,7 +54,7 @@ case class Translation(availableVersions: List[TranslationVersion], repo: PlayGi
 
 /**
  * A version of a particular translation.
- * 
+ *
  * @param version The version
  * @param repo The file repository for the this version
  * @param playDoc The play doc instance that can render the documentation for this version
@@ -119,15 +119,15 @@ object Version {
   }
 
   /**
-    * Finds the most recent stable version, and then the latest version that matches that
-    *
-    * @param displayVersions the list of display versions.
-    * @return the default version.
-    */
+   * Finds the most recent stable version, and then the latest version that matches that
+   *
+   * @param displayVersions the list of display versions.
+   * @return the default version.
+   */
   def findDefaultVersion(displayVersions: Seq[Version]): Option[Version] = {
-      displayVersions.find(_.versionType.isStable).flatMap { stable =>
-        displayVersions.find(v => v.sameMajor(stable) && (v.versionType.isLatest || v.versionType.isStable))
-      }.orElse(displayVersions.headOption)
+    displayVersions.find(_.versionType.isStable).flatMap { stable =>
+      displayVersions.find(v => v.sameMajor(stable) && (v.versionType.isLatest || v.versionType.isStable))
+    }.orElse(displayVersions.headOption)
   }
 
   def parse(name: String): Option[Version] = {
@@ -167,13 +167,13 @@ object Version {
       }
 
       splittedFull match {
-        case Array(I(era), I(major))                            => v(era, major)
-        case Array(I(era), I(major), I(minor))                  => v(era, major, minor)
-        case Array(I(era), I(major), "x")                       => v(era, major, 9999, 0, Latest)
-        case Array(I(era), I(major), T(vt))                     => v(era, major, 0, 0, vt)
-        case Array(I(era), I(major), I(minor), I(patch))        => v(era, major, minor, patch)
-        case Array(I(era), I(major), I(minor), "x")             => v(era, major, minor, 9999, Latest)
-        case Array(I(era), I(major), I(minor), T(vt))           => v(era, major, minor, 0, vt)
+        case Array(I(era), I(major)) => v(era, major)
+        case Array(I(era), I(major), I(minor)) => v(era, major, minor)
+        case Array(I(era), I(major), "x") => v(era, major, 9999, 0, Latest)
+        case Array(I(era), I(major), T(vt)) => v(era, major, 0, 0, vt)
+        case Array(I(era), I(major), I(minor), I(patch)) => v(era, major, minor, patch)
+        case Array(I(era), I(major), I(minor), "x") => v(era, major, minor, 9999, Latest)
+        case Array(I(era), I(major), I(minor), T(vt)) => v(era, major, minor, 0, vt)
         case Array(I(era), I(major), I(minor), I(patch), T(vt)) => v(era, major, minor, patch, vt)
         case _ => None
       }
@@ -183,6 +183,5 @@ object Version {
         None
     }
   }
-
 
 }

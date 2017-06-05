@@ -1,15 +1,15 @@
 package services.github
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{ Singleton, Inject }
 
 import akka.actor.ActorSystem
 import com.google.inject.name.Named
 import models.github._
 import play.api.Logger
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.concurrent.duration._
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
 
 trait ContributorsSummariser {
   /**
@@ -47,9 +47,9 @@ class DefaultContributorsSummariser @Inject() (gitHub: GitHub, config: GitHubCon
         .flatten
         .groupBy(_._1.id)
         .map {
-        case ((_, contributions @ ((user, _) :: _))) =>
-          user -> contributions.map(_._2).sum
-      }.toSeq
+          case ((_, contributions @ ((user, _) :: _))) =>
+            user -> contributions.map(_._2).sum
+        }.toSeq
 
       // Sort by contributions in reverse.
       contributorContributions.sortBy(_._2)
@@ -84,11 +84,13 @@ class DefaultContributorsSummariser @Inject() (gitHub: GitHub, config: GitHubCon
 }
 
 @Singleton
-class CachingContributorsSummariser @Inject() (actorSystem: ActorSystem,
-                                               @Named("gitHubContributorsSummariser") delegate: ContributorsSummariser)(implicit ec: ExecutionContext) extends ContributorsSummariser {
+class CachingContributorsSummariser @Inject() (
+    actorSystem: ActorSystem,
+    @Named("gitHubContributorsSummariser") delegate: ContributorsSummariser
+)(implicit ec: ExecutionContext) extends ContributorsSummariser {
   @volatile private var contributors: Contributors = FallbackContributors.contributors
 
-  actorSystem.scheduler.schedule(0 seconds, 24 hours) {
+  actorSystem.scheduler.schedule(0.seconds, 24.hours) {
     delegate.fetchContributors.onComplete {
       case Failure(t) => Logger.error("Unable to load contributors from GitHub", t)
       case Success(cs) =>
@@ -112,5 +114,4 @@ class CachingContributorsSummariser @Inject() (actorSystem: ActorSystem,
 class OfflineContributorsSummariser extends ContributorsSummariser {
   def fetchContributors = Future.successful(FallbackContributors.contributors)
 }
-
 

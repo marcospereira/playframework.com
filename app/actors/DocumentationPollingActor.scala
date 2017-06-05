@@ -2,17 +2,17 @@ package actors
 
 import javax.inject.Inject
 
-import actors.DocumentationActor.{DocumentationGitRepo, DocumentationGitRepos, UpdateDocumentation}
-import akka.actor.{Actor, ActorRef}
+import actors.DocumentationActor.{ DocumentationGitRepo, DocumentationGitRepos, UpdateDocumentation }
+import akka.actor.{ Actor, ActorRef }
 import com.google.inject.assistedinject.Assisted
 import models.documentation._
 import org.apache.commons.io.IOUtils
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.util.Base64
 import play.api.Logger
-import play.api.i18n.{Lang, MessagesApi}
-import play.doc.{PageIndex, PlayDoc, TranslatedPlayDocTemplates}
-import utils.{AggregateFileRepository, PlayGitRepository}
+import play.api.i18n.{ Lang, MessagesApi }
+import play.doc.{ PageIndex, PlayDoc, TranslatedPlayDocTemplates }
+import utils.{ AggregateFileRepository, PlayGitRepository }
 
 import scala.concurrent.duration._
 
@@ -32,8 +32,11 @@ object DocumentationPollingActor {
  * expensive task of scanning/indexing the repo to extract all the available versions and table of contents for the
  * documentation.
  */
-class DocumentationPollingActor @Inject() (messages: MessagesApi, @Assisted repos: DocumentationGitRepos,
-                                           @Assisted documentationActor: ActorRef) extends Actor {
+class DocumentationPollingActor @Inject() (
+    messages: MessagesApi,
+    @Assisted repos: DocumentationGitRepos,
+    @Assisted documentationActor: ActorRef
+) extends Actor {
 
   import DocumentationPollingActor._
   import context.dispatcher
@@ -156,8 +159,12 @@ class DocumentationPollingActor @Inject() (messages: MessagesApi, @Assisted repo
     }
   }
 
-  private def versionsToTranslations(repo: PlayGitRepository, versions: Seq[(Version, ObjectId, String)],
-                                     aggregate: Translation, old: Option[Translation])(implicit lang: Lang): List[TranslationVersion] = {
+  private def versionsToTranslations(
+    repo: PlayGitRepository,
+    versions: Seq[(Version, ObjectId, String)],
+    aggregate: Translation,
+    old: Option[Translation]
+  )(implicit lang: Lang): List[TranslationVersion] = {
     versions.sortBy(_._1).reverse.map { version =>
       val baseRepo = repo.fileRepoForHash(version._2)
       val aggregateVersion = aggregate.byVersion.get(version._1)
@@ -171,7 +178,6 @@ class DocumentationPollingActor @Inject() (messages: MessagesApi, @Assisted repo
         // The version hasn't changed, don't rescan
         case Some(same: TranslationVersion) if same.cacheId == cacheId => same
         case _ =>
-
 
           val playDoc = new PlayDoc(
             markdownRepository = fileRepo,

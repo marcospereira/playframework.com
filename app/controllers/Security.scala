@@ -1,8 +1,8 @@
 package controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
-import play.api.mvc.{BaseController, ControllerComponents}
+import play.api.mvc.{ BaseController, ControllerComponents }
 import play.api.Environment
 import play.twirl.api.Html
 import utils.Markdown
@@ -10,8 +10,10 @@ import org.apache.commons.io.IOUtils
 import java.io.File
 
 @Singleton
-class Security @Inject() (environment: Environment, val controllerComponents: ControllerComponents)
-                         (implicit val reverseRouter: documentation.ReverseRouter) extends BaseController with Common {
+class Security @Inject() (
+    environment: Environment,
+    val controllerComponents: ControllerComponents
+)(implicit val reverseRouter: documentation.ReverseRouter) extends BaseController with Common {
 
   def vulnerability(name: String) = Action { implicit req =>
     val path = "public/markdown/vulnerabilities/" + name

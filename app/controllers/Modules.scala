@@ -10,9 +10,10 @@ import scala.concurrent.ExecutionContext
 
 @Singleton
 class Modules @Inject() (
-  modulesLookup: ModulesLookup,
-  moduleDao: ModuleDao,
-  components: ControllerComponents)(implicit ec: ExecutionContext, reverseRouter: documentation.ReverseRouter) extends AbstractController(components) {
+    modulesLookup: ModulesLookup,
+    moduleDao: ModuleDao,
+    components: ControllerComponents
+)(implicit ec: ExecutionContext, reverseRouter: documentation.ReverseRouter) extends AbstractController(components) {
 
   def index(keyword: String) = Action { implicit request =>
     render {

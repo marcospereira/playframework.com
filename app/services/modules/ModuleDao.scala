@@ -1,6 +1,6 @@
 package services.modules
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
 import com.google.inject.ImplementedBy
 import models.modules._
@@ -69,7 +69,7 @@ class DbModuleDao @Inject() (db: Database) extends ModuleDao {
       select * from Module
       left join ModuleRelease on Module.id = ModuleRelease.module_id
       where name = {name}
-                     """).on('name -> name).as( moduleParser ~ (releaseParser?) *)
+                     """).on('name -> name).as(moduleParser ~ (releaseParser?) *)
 
     result.headOption.map {
       case module ~ _ => (module, result.flatMap(_._2).sortBy(_.date).reverse)

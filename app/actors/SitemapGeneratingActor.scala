@@ -1,7 +1,7 @@
 package actors
 
 import akka.actor.Actor
-import models.documentation.{Sitemap, Documentation}
+import models.documentation.{ Sitemap, Documentation }
 
 object SitemapGeneratingActor {
 

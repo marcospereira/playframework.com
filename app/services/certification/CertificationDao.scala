@@ -1,6 +1,6 @@
 package services.certification
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
 import anorm.SqlParser._
 import anorm._
@@ -41,7 +41,6 @@ class DbCertificationDao @Inject() (db: Database) extends CertificationDao {
       flatten map
       (Certification.apply _).tupled
   }
-
 
   def registerInterest(certification: Certification) = {
     db.withConnection { implicit conn =>

@@ -1,14 +1,14 @@
 package views.html.documentation
 
 import controllers.documentation.ReverseRouter
-import models.documentation.{Milestone, ReleaseCandidate, TranslationContext, Version}
-import play.api.i18n.{Lang, MessagesApi}
+import models.documentation.{ Milestone, ReleaseCandidate, TranslationContext, Version }
+import play.api.i18n.{ Lang, MessagesApi }
 import play.twirl.api.Html
 
 object Helpers {
 
   def isNotMostRecentVersion(implicit context: TranslationContext): Boolean = {
-    ! context.version.equals(latestCurrent)
+    !context.version.equals(latestCurrent)
   }
 
   def displayVersionMessage(page: String)(implicit messagesApi: MessagesApi, context: TranslationContext, reverseRouter: ReverseRouter): Html = {
@@ -59,13 +59,13 @@ object Helpers {
   }
 
   // 2.3.2
-  private def oldReleaseMessage(specificLink: Html, seriesLink: Html)(implicit messagesApi: MessagesApi, lang: Lang): Html  = {
+  private def oldReleaseMessage(specificLink: Html, seriesLink: Html)(implicit messagesApi: MessagesApi, lang: Lang): Html = {
     // You are viewing the documentation for the {0} release in the {1} series of releases.
     Html(messagesApi("documentation.old.release.message", specificLink.toString(), seriesLink.toString()))
   }
 
   // 2.3.x
-  private def oldLatestMessage(seriesLink: Html)(implicit messagesApi: MessagesApi, lang: Lang): Html  = {
+  private def oldLatestMessage(seriesLink: Html)(implicit messagesApi: MessagesApi, lang: Lang): Html = {
     // You are viewing the documentation for the {0} release series.
     Html(messagesApi("documentation.old.latest.message", seriesLink.toString()))
   }

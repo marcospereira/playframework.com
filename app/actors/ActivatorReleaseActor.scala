@@ -5,7 +5,7 @@ import javax.inject.Inject
 import akka.actor.Actor
 import akka.pattern.pipe
 import models.ActivatorRelease
-import play.api.{Configuration, Logger}
+import play.api.{ Configuration, Logger }
 import play.api.libs.ws.WSClient
 import scala.concurrent.duration._
 
@@ -40,7 +40,7 @@ class ActivatorReleaseActor @Inject() (ws: WSClient, configuration: Configuratio
       scalaVersion = "(unknown)"
     )
   )
-  
+
   def withRelease(release: ActivatorRelease): Receive = {
     case GetVersion => sender() ! release
     case newRelease: ActivatorRelease =>

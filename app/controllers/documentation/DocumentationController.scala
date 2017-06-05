@@ -5,25 +5,25 @@ import actors.DocumentationActor.{ NotFound => DocsNotFound, NotModified => Docs
 import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.util.Timeout
-import javax.inject.{Named, Inject, Singleton}
+import javax.inject.{ Named, Inject, Singleton }
 import models.PlayReleases
-import models.documentation.{AlternateTranslation, TranslationContext, Version}
+import models.documentation.{ AlternateTranslation, TranslationContext, Version }
 import org.joda.time.format.DateTimeFormat
 import play.api.http.HttpEntity
-import play.api.i18n.{MessagesApi, Lang}
+import play.api.i18n.{ MessagesApi, Lang }
 import play.api.mvc._
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.concurrent.duration._
 
-
 import scala.reflect.ClassTag
 
 @Singleton
-class DocumentationController @Inject()(
-  messages: MessagesApi,
-  @Named("documentation-actor") documentationActor: ActorRef,
-  releases: PlayReleases,
-  components: ControllerComponents)(implicit executionContext: ExecutionContext, reverseRouter: ReverseRouter) extends AbstractController(components) {
+class DocumentationController @Inject() (
+    messages: MessagesApi,
+    @Named("documentation-actor") documentationActor: ActorRef,
+    releases: PlayReleases,
+    components: ControllerComponents
+)(implicit executionContext: ExecutionContext, reverseRouter: ReverseRouter) extends AbstractController(components) {
 
   private implicit val timeout = Timeout(5.seconds)
 
@@ -80,7 +80,7 @@ class DocumentationController @Inject()(
   }
 
   private def actorRequest[T <: DocumentationActor.Response[T]: ClassTag](actor: ActorRef, page: String,
-      msg: DocumentationActor.Request[T])(block: T => Result)(implicit req: RequestHeader): Future[Result] = {
+    msg: DocumentationActor.Request[T])(block: T => Result)(implicit req: RequestHeader): Future[Result] = {
     (actor ? msg).mapTo[Response[T]].flatMap {
       case DocsNotFound(context) =>
         val future = Future.sequence(context.displayVersions.map(pageExists(_, page)))
@@ -126,7 +126,7 @@ class DocumentationController @Inject()(
     ResourceAction(v, resource, (version, etag) => LoadResource(lang, version, etag, resource))
   }
 
-  def v1File(lang: Option[Lang], v: String, file: String) =  {
+  def v1File(lang: Option[Lang], v: String, file: String) = {
     val resource = "files/" + file
     ResourceAction(v, resource, (version, etag) => LoadResource(lang, version, etag, resource), inline = false)
   }

@@ -2,7 +2,7 @@ package models
 
 import javax.inject.Inject
 
-import com.google.inject.{AbstractModule, Singleton}
+import com.google.inject.{ AbstractModule, Singleton }
 import play.api.Configuration
 import play.api.cache.SyncCacheApi
 import play.api.libs.json._
@@ -11,7 +11,7 @@ import play.api.libs.ws.WSClient
 import scala.collection.JavaConverters._
 
 import scala.concurrent.duration._
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 case class TemplateParameter(
   `type`: String,
@@ -28,13 +28,13 @@ object TemplateParameter {
 }
 
 case class ExampleProject(
-  displayName: String,
-  downloadUrl: String,
-  gitHubRepo: String,
-  gitHubUrl: String,
-  keywords: Seq[String],
-  templateName: String,
-  parameters: Option[Seq[TemplateParameter]]
+    displayName: String,
+    downloadUrl: String,
+    gitHubRepo: String,
+    gitHubUrl: String,
+    keywords: Seq[String],
+    templateName: String,
+    parameters: Option[Seq[TemplateParameter]]
 ) {
   def hasParams: Boolean = parameters.nonEmpty
   def params: Seq[TemplateParameter] = parameters.toSeq.flatten
@@ -51,10 +51,10 @@ class ExamplesModule extends AbstractModule {
 }
 
 @Singleton
-class PlayExampleProjectsService @Inject()(
-  configuration: Configuration,
-  ws: WSClient,
-  cache: SyncCacheApi
+class PlayExampleProjectsService @Inject() (
+    configuration: Configuration,
+    ws: WSClient,
+    cache: SyncCacheApi
 )(implicit ec: ExecutionContext) {
 
   private val logger = org.slf4j.LoggerFactory.getLogger(this.getClass)

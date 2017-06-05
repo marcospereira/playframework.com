@@ -1,28 +1,28 @@
 package controllers
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
 import models._
 import models.certification.Certification
 import org.apache.commons.io.IOUtils
 import play.api._
-import play.api.i18n.{I18nSupport, Lang}
+import play.api.i18n.{ I18nSupport, Lang }
 import play.api.mvc._
 import play.twirl.api.Html
 import services.certification.CertificationDao
 import utils.Markdown
 import views._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class Application @Inject() (
-  environment: Environment,
-  configuration: Configuration,
-  certificationDao: CertificationDao,
-  releases: PlayReleases,
-  exampleProjectsService: PlayExampleProjectsService,
-  components: ControllerComponents
+    environment: Environment,
+    configuration: Configuration,
+    certificationDao: CertificationDao,
+    releases: PlayReleases,
+    exampleProjectsService: PlayExampleProjectsService,
+    components: ControllerComponents
 )(implicit ec: ExecutionContext, val reverseRouter: documentation.ReverseRouter) extends AbstractController(components) with Common with I18nSupport {
 
   private val VulnerableVersions = Set(
@@ -165,22 +165,23 @@ class Application @Inject() (
       }
     }
 
-    val sections = byVersion.map { case (v, p) =>
-      val StarterKeyword = "starter" // this MUST be in the project keywords for this to work
-      val SeedKeyword = "seed"
-      val starters = p.filter(e => e.keywords.contains(StarterKeyword) && !e.hasParams)
-        .groupBy(byLanguage)
-        .mapValues(_.sortBy(_.displayName))
+    val sections = byVersion.map {
+      case (v, p) =>
+        val StarterKeyword = "starter" // this MUST be in the project keywords for this to work
+        val SeedKeyword = "seed"
+        val starters = p.filter(e => e.keywords.contains(StarterKeyword) && !e.hasParams)
+          .groupBy(byLanguage)
+          .mapValues(_.sortBy(_.displayName))
 
-      val examples = p.filter(e => !e.keywords.contains(StarterKeyword) && !e.hasParams)
-        .groupBy(byLanguage)
-        .mapValues(_.sortBy(_.displayName))
+        val examples = p.filter(e => !e.keywords.contains(StarterKeyword) && !e.hasParams)
+          .groupBy(byLanguage)
+          .mapValues(_.sortBy(_.displayName))
 
-      val seeds = p.filter(e => e.hasParams && e.keywords.contains(SeedKeyword))
-        .groupBy(byLanguage)
-        .mapValues(_.sortBy(_.displayName))
+        val seeds = p.filter(e => e.hasParams && e.keywords.contains(SeedKeyword))
+          .groupBy(byLanguage)
+          .mapValues(_.sortBy(_.displayName))
 
-      v -> PlayExampleSection(starters, seeds, examples)
+        v -> PlayExampleSection(starters, seeds, examples)
     }
     PlayExamples(sections)
   }
@@ -188,6 +189,8 @@ class Application @Inject() (
 
 case class PlayExamples(sections: Seq[(String, PlayExampleSection)])
 
-case class PlayExampleSection(starters: Map[String, Seq[ExampleProject]],
-                              seeds: Map[String, Seq[ExampleProject]],
-                              examples: Map[String, Seq[ExampleProject]])
+case class PlayExampleSection(
+  starters: Map[String, Seq[ExampleProject]],
+  seeds: Map[String, Seq[ExampleProject]],
+  examples: Map[String, Seq[ExampleProject]]
+)

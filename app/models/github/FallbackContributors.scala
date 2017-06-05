@@ -23,7 +23,7 @@ object FallbackContributors {
       GitHubUser(id = 59060, login = "baloo", url = "https://api.github.com/users/baloo", avatar_url = "https://avatars.githubusercontent.com/u/59060?v=3", html_url = "https://github.com/baloo", name = Some("Arthur Gautier")),
       GitHubUser(id = 703748, login = "dotta", url = "https://api.github.com/users/dotta", avatar_url = "https://avatars.githubusercontent.com/u/703748?v=3", html_url = "https://github.com/dotta", name = Some("Mirco Dotta")),
       GitHubUser(id = 4576, login = "marcospereira", url = "https://api.github.com/users/marcospereira", avatar_url = "https://avatars.githubusercontent.com/u/4576?v=3", html_url = "https://github.com/marcospereira", name = Some("Marcos Silva Pereira")),
-      GitHubUser(id = 71236, login = "wsargent", url = "https://api.github.com/users/wsargent", avatar_url = "https://avatars.githubusercontent.com/u/71236?v=3", html_url = "https://github.com/wsargent", name = None),GitHubUser(id = 71236, login = "wsargent", url = "https://api.github.com/users/wsargent", avatar_url = "https://avatars.githubusercontent.com/u/71236?v=3", html_url = "https://github.com/wsargent", name = None)
+      GitHubUser(id = 71236, login = "wsargent", url = "https://api.github.com/users/wsargent", avatar_url = "https://avatars.githubusercontent.com/u/71236?v=3", html_url = "https://github.com/wsargent", name = None), GitHubUser(id = 71236, login = "wsargent", url = "https://api.github.com/users/wsargent", avatar_url = "https://avatars.githubusercontent.com/u/71236?v=3", html_url = "https://github.com/wsargent", name = None)
     ),
     playOrganisation = List(
       GitHubUser(id = 126080, login = "pk11", url = "https://api.github.com/users/pk11", avatar_url = "https://avatars.githubusercontent.com/u/126080?v=3", html_url = "https://github.com/pk11", name = None),
@@ -642,6 +642,5 @@ object FallbackContributors {
       |      )
       |    )""".stripMargin
   }
-
 
 }

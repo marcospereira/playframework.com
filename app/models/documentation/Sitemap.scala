@@ -3,7 +3,7 @@ package models.documentation
 import java.nio.file.Paths
 
 import play.api.i18n.Lang
-import play.doc.{TocTree, Toc, TocPage}
+import play.doc.{ TocTree, Toc, TocPage }
 
 import scala.xml.Node
 
@@ -32,20 +32,21 @@ case class SitemapUrl(loc: String, priority: Priority, alternates: Map[Lang, Str
 case class Sitemap(urls: Seq[SitemapUrl]) {
 
   def toXml: Node = {
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-            xmlns:xhtml="http://www.w3.org/1999/xhtml">
-    { urls map { url =>
-      <url>
-        <loc>{url.loc}</loc>
-        <priority>{url.priority.value.formatted("%.2f")}</priority>
-        {url.alternates map { case (lang, href) =>
-          <xhtml:link
-          rel="alternate"
-          hreflang={lang.code}
-          href={href}/>
-        }}
-      </url>
-    }}
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+      {
+        urls map { url =>
+          <url>
+            <loc>{ url.loc }</loc>
+            <priority>{ url.priority.value.formatted("%.2f") }</priority>
+            {
+              url.alternates map {
+                case (lang, href) =>
+                  <xhtml:link rel="alternate" hreflang={ lang.code } href={ href }/>
+              }
+            }
+          </url>
+        }
+      }
     </urlset>
   }
 
@@ -125,8 +126,9 @@ object Sitemap {
     } yield {
       val loc = s"https://www.playframework.com/documentation/$version/$page"
       // for all langs that have the page translated for this version, add an alternate URL to the sitemap
-      val alternates = pageTranslations.collect { case (lang, ps) if ps.contains(page) =>
-        lang -> s"https://www.playframework.com/documentation/${lang.code}/$version/$page"
+      val alternates = pageTranslations.collect {
+        case (lang, ps) if ps.contains(page) =>
+          lang -> s"https://www.playframework.com/documentation/${lang.code}/$version/$page"
       }
       SitemapUrl(loc, Priority.LatestDocumentation, alternates)
     }

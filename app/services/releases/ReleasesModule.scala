@@ -1,9 +1,9 @@
 package services.releases
 
-import javax.inject.{Provider, Inject, Singleton}
+import javax.inject.{ Provider, Inject, Singleton }
 
 import com.google.inject.AbstractModule
-import models.{PlayRelease, PlayReleases}
+import models.{ PlayRelease, PlayReleases }
 import org.apache.commons.io.IOUtils
 import play.api.Environment
 import play.api.libs.json.Json

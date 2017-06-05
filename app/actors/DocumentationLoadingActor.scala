@@ -1,10 +1,10 @@
 package actors
 
 import akka.actor.Actor
-import akka.stream.scaladsl.{StreamConverters, Source}
+import akka.stream.scaladsl.{ StreamConverters, Source }
 import akka.util.ByteString
 import org.apache.commons.io.IOUtils
-import play.doc.{PlayDoc, FileRepository}
+import play.doc.{ PlayDoc, FileRepository }
 import utils._
 
 object DocumentationLoadingActor {

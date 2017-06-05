@@ -10,7 +10,8 @@ import play.utils.UriEncoding
  */
 @Singleton
 class Router @Inject() (
-  docController: DocumentationController) extends play.api.routing.Router {
+    docController: DocumentationController
+) extends play.api.routing.Router {
 
   private var _prefix = "/"
 
