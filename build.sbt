@@ -54,4 +54,4 @@ managedSourceDirectories in Compile += crossTarget.value / "version"
 sources in (Compile, doc) := Seq.empty
 publishArtifact in (Compile, packageDoc) := false
 
-resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
+scalacOptions += "-deprecation"

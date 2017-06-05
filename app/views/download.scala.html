@@ -1,5 +1,6 @@
+@import controllers.documentation.ReverseRouter
 @(releases: PlayReleases, examples: PlayExamples, platform: Platform.Platform,
-        title: String = "Downloads")(implicit requestHeader: RequestHeader)
+        title: String = "Downloads")(implicit req: RequestHeader, reverseRouter: ReverseRouter)
 
 @renderRelease(linkClass: String, release: PlayRelease) = {
 @if(release.secureUrl) {
@@ -79,7 +80,7 @@
       </p>
       <p>
         Check out the Play docs for
-        <a href="@controllers.documentation.ReverseRouter.latest(None, "Installing")">installation instructions</a>.
+        <a href="@reverseRouter.latest(None, "Installing")">installation instructions</a>.
       </p>
 
       @if(releases.development.nonEmpty) {
@@ -128,8 +129,8 @@
       <q>Your download will begin shortly...</q>
       <h3>What's next?</h3>
       <ul>
-        <li><a href="@controllers.documentation.ReverseRouter.latest(None, "Installing")">Installation</a></li>
-        <li class="bold"><a href="@controllers.documentation.ReverseRouter.latest(None, "NewApplication")">
+        <li><a href="@reverseRouter.latest(None, "Installing")">Installation</a></li>
+        <li class="bold"><a href="@reverseRouter.latest(None, "NewApplication")">
           Get started</a></li>
         <li><a href="@routes.Application.download()">Read the complete documentation</a></li>
         <li><a href="@routes.Application.getInvolved">Get involved</a></li>
